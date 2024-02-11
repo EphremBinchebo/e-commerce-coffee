@@ -1,5 +1,7 @@
 package com.greencoffee.common.entity;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +29,11 @@ public class Role {
 	}
     
 	
+	public Role(Integer id) {
+		this.id = id;
+	}
+
+
 	public Role(String name) {
 		this.name = name;
 	}
@@ -61,5 +68,23 @@ public class Role {
 		this.description = description;
 	}
 
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Role other = (Role) obj;
+		return Objects.equals(id, other.id);
+	}
+    
 }
