@@ -50,7 +50,7 @@ public class User {
 	public User() {
 
 	}
-	
+
 	public User(String email, String password, String firstName, String lastName) {
 		this.email = email;
 		this.password = password;
@@ -124,6 +124,12 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + "]";
 	}
 	
 	

@@ -86,5 +86,12 @@ public class Role {
 		Role other = (Role) obj;
 		return Objects.equals(id, other.id);
 	}
+
+
+	@Override
+	public String toString() {
+		return this.name;
+	}
     
+	
 }
