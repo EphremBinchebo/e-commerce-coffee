@@ -14,7 +14,7 @@ import com.greencoffee.common.entity.Role;
 import com.greencoffee.common.entity.User;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE )
+//@AutoConfigureTestDatabase(replace = Replace.NONE )
 @Rollback(false)
 public class UserRepositoryTest {
 
@@ -89,6 +89,15 @@ public class UserRepositoryTest {
 	public void testDelateUser() {
 		Integer userId = 1;
 		repo.deleteById(userId);
+	}
+	
+	@Test
+	public void testGetUserByEmail() {
+		String email = "selam@gmail.com";
+		User user = repo.getUserByEmail(email);
+		
+		assertThat(user).isNotNull();
+		
 	}
 	
 }

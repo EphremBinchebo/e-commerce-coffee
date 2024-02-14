@@ -29,5 +29,11 @@ public class UserService {
 		// TODO Auto-generated method stub
 		repo.save(user);
 	}
+	
+	public boolean isEmailUnique(String email) {
+		User userByEmail = repo.getUserByEmail(email);
+		
+		return userByEmail == null;
+	}
 
 }
