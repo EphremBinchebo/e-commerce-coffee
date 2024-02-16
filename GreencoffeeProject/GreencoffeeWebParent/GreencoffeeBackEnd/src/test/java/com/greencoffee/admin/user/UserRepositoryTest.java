@@ -14,7 +14,7 @@ import com.greencoffee.common.entity.Role;
 import com.greencoffee.common.entity.User;
 
 @DataJpaTest
-//@AutoConfigureTestDatabase(replace = Replace.NONE )
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
 public class UserRepositoryTest {
 

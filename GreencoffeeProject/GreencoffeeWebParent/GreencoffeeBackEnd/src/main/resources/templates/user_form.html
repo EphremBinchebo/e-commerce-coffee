@@ -133,16 +133,16 @@
 
  function checkEmailUnique(form) {
  url = "[[@{/users/check_email}]]";
- userEmail = $("#email").val();
+ userByEmail = $("#email").val();
  csrfValue = $("input[name='_csrf']").val();
- params = {email: userEmail, _csrf: csrfValue};
+ params = {email: userByEmail, _csrf: csrfValue};
  
  $.post(url, params, function(response){
     if (response == "OK"){
         form.submit();
     }else if(response == "Duplicated"){
     
-        alert("There is another user having the same email " + userEmail);
+        alert("There is another user having the same email " + userByEmail);
        }
     });
   
