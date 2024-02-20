@@ -1,6 +1,7 @@
 package com.greencoffee.admin.user;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,14 +27,47 @@ public class UserService {
 	}
 
 	public void save(User user) {
-		// TODO Auto-generated method stub
+		boolean isUpdatingUser = (user.getId() != null);
+		
+		if(isUpdatingUser) {
+			User existingUser = repo.findById(user.getId()).get();
+		    
+			repo.save(existingUser);
+			
+		
+		
+		}
 		repo.save(user);
 	}
 	
-	public boolean isEmailUnique(String email) {
+	public boolean isEmailUnique(Integer id, String email) {
 		User userByEmail = repo.getUserByEmail(email);
 		
-		return userByEmail == null;
+		if(userByEmail == null) return true;
+		
+		boolean isCreatingNew = (id == null);
+		
+		if(isCreatingNew) {
+			if(userByEmail != null) return false;
+			
+		} else {
+			if(userByEmail.getId() != id) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
+	public User get(Integer id) throws UserNotFoundException {
+		try {
+			return repo.findById(id).get();
+		}catch (NoSuchElementException ex) {
+			throw new UserNotFoundException("Could not find any user with this ID");
+		
+		}
+		
+		
 	}
 
 }
