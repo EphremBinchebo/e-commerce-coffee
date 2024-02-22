@@ -1,4 +1,4 @@
-package com.greencoffee.admin.user;
+package com.greencoffee.admin.producer;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -6,53 +6,57 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.greencoffee.common.entity.Role;
-import com.greencoffee.common.entity.User;
+import com.greencoffee.admin.user.RoleRepository;
+import com.greencoffee.admin.user.UserNotFoundException;
 
-import jakarta.transaction.Transactional;
+import com.greencoffee.common.entity.Producer;
+import com.greencoffee.common.entity.Role;
+
+
 
 @Service
-@Transactional
-public class UserService {
+public class ProducerService {
 	
 	@Autowired
-	private UserRepository repo;
+	private ProducerRepository repo;
 	
 	@Autowired
 	private RoleRepository roleRepo;
 	
-	public List<User> listAll(){
-		return (List<User>) repo.findAll();
+	public List<Producer> listAll(){
+		return (List<Producer>) repo.findAll();
 	}
 	   
 	public List<Role> listRoles(){
 		return (List<Role>) roleRepo.findAll();
 	}
 
-	public User save(User user) {
-		boolean isUpdatingUser = (user.getId() != null);
+	public void save(Producer producer) {
+		boolean isUpdatingProducer = (producer.getId() != null);
 		
-		if(isUpdatingUser) {
-			User existingUser = repo.findById(user.getId()).get();
+		if(isUpdatingProducer) {
+			Producer existingProducer = repo.findById(producer.getId()).get();
 		    
-			repo.save(existingUser);
-					
+			repo.save(existingProducer);
+			
+		
+		
 		}
-		return repo.save(user);
+		repo.save(producer);
 	}
 	
 	public boolean isEmailUnique(Integer id, String email) {
-		User userByEmail = repo.getUserByEmail(email);
+		Producer producerByEmail = repo.getProducerByEmail(email);
 		
-		if(userByEmail == null) return true;
+		if(producerByEmail == null) return true;
 		
 		boolean isCreatingNew = (id == null);
 		
 		if(isCreatingNew) {
-			if(userByEmail != null) return false;
+			if(producerByEmail != null) return false;
 			
 		} else {
-			if(userByEmail.getId() != id) {
+			if(producerByEmail.getId() != id) {
 				return false;
 			}
 		}
@@ -60,7 +64,7 @@ public class UserService {
 		return true;
 	}
 
-	public User get(Integer id) throws UserNotFoundException {
+	public Producer get(Integer id) throws UserNotFoundException {
 		try {
 			return repo.findById(id).get();
 		}catch (NoSuchElementException ex) {
@@ -79,11 +83,6 @@ public class UserService {
 		}
 		
 		repo.deleteById(id);
-	}
-	
-	public void updateUserEnabledStatus(Integer id, boolean enabled) {
-		repo.updateEnabledStatus(id, enabled);
-		
 	}
 
 }

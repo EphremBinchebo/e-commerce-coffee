@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.JoinColumn;
 
 @Entity
@@ -40,7 +41,7 @@ public class User {
 	
 	@ManyToMany
 	@JoinTable(
-			name = "users_roles",
+			name = "user_roles",
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id")
 			)
@@ -132,6 +133,13 @@ public class User {
 				+ ", lastName=" + lastName + "]";
 	}
 	
-	
+	@Transient
+	public String getPhotosImagePath() {
+		if(id == null || photos == null ) return "/images/default-user.png";
+		
+			return "/user-photos/" + this.id + "/" + this.photos;
+		}
+		
+	}
 
-}
+

@@ -4,6 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, intial-scale=1.0, minimum-scale=1.0">
 <title>Home -Greencoffee Admin</title>
+<!--  --><link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}"/>-->
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
 <link rel="stylesheet" type="text/css" th:href="@{webjars/bootstrap/css/bootstrap.min.css}">
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
@@ -22,7 +25,7 @@
            <li class="nav-item">
              <a class="nav-link" th:href="@{/users}">Users</a>
           </li>
-          <li class="nav-item">
+           <li class="nav-item">
              <a class="nav-link" th:href="@{/producers}">Producers</a>
           </li>
            <li class="nav-item">
@@ -59,12 +62,72 @@
   </div>
   <div class="container-fluid">
     <div>
-     <h1>Greencoffee Control Panel</h1>
+       <h2>Manage Producers</h1>
+       <a th:href="@{/producers/new}">Create New Producers</a>    
+     </div>
+     <div th:if="${message !=null}" class="alert alert-success text-center">
+       [[${message}]]
+     </div>
+   <div>
+     <table class="table table-bordered table-striped table-hover table-responsive-xl">
+        <thead class="table-success">
+           <tr>
+              <th>Producer ID</th>          
+              <th>Photos</th>  
+               <th>Email</th>      
+              <th>First Name</th>       
+              <th>Last Name</th>  
+              <th>Phone Number</th>
+              <th>GeoLocation</th>
+              <th>Address</th>
+              <th>Altitude</th>    
+              <th>Roles</th>        
+              <th>Enabled</th>
+               <th></th>
+           </tr>
+        </thead>
+        <tbody>
+        <tr th:each="producer : ${listProducers}">
+        <td>[[${producer.id}]]</td>
+        <td><span class="fas fa-portrait fa-3x icon-silver"></span></td>
+        <td>[[${producer.email}]]</td>
+        <td>[[${producer.firstName}]]</td>
+        <td>[[${producer.lastName}]]</td>
+        <td>[[${producer.phoneNumber}]]</td>
+        <td>[[${producer.geolocation}]]</td>
+        <td>[[${producer.address}]]</td>
+        <td>[[${producer.altitude}]]</td>
+        <td>[[${producer.roles}]]</td>
+        <td>
+        <a th:if="${producer.enabled == true}" class="fas fa-check-circle fa-2x icon-green"></a>
+         <a th:if="${producer.enabled == false}" class="fas fa-check-circle fa-2x icon-dark"></a>
+        </td>
+        <td>
+           <a class="fas fa-edit fa-2x icon-green" th:href="@{'/producers/edit/' +${producer.id}}"
+           title="Edit this producer"></a> 
+           &nbsp;
+           <a class="fas fa-trash fa-2x icon-dark" link-delete th:href="@{'/producers/delete/' +${producer.id}}"
+            title="Delete this producer" ></a> 
+        </td>
+        </tr>
+        </tbody>
+     </table>
    </div>
    
-    <div>
+   
+    <div class=text-center>
      <p>Greencoffee Control Panel Copyright &copy; Greencoffee</p>
    </div>
   </div>
+  <script type="text/javascript">
+  $(document).ready(function(){
+   
+    $(".link-delete").on("click", function(e){
+      e.preventDefault();
+      alert($(this).attr("href"));
+    });
+    
+    });
+  </script>
 </body>
 </html>
