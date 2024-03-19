@@ -49,7 +49,7 @@ public class ProducerController {
 	  service.save(producer);
 	  
 	  redirectAttribute.addFlashAttribute("message", "The user has been saved successfully.");
-	  return "redirect:/producers";
+	  return "redirect:producers/producers";
 	  
   }
   
@@ -66,7 +66,7 @@ public class ProducerController {
 		  return "producer_form";
 	}catch(UserNotFoundException ex){
 		 redirectAttribute.addFlashAttribute("message", ex.getMessage());
-		 return "redirect:/producers";
+		 return "redirect:producers/producers";
 	}
   }
    
@@ -86,6 +86,6 @@ public class ProducerController {
 		
 	}
 	  
-	  return "redirect:/producers";
+	  return "redirect:producers/producers";
   }
 }

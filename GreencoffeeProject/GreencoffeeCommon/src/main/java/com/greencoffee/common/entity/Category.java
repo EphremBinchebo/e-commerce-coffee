@@ -3,6 +3,8 @@ package com.greencoffee.common.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.greencoffee.common.constants.Constants;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "categories")
@@ -39,20 +42,33 @@ public class Category {
 	@OneToMany(mappedBy = "parent")
 	private Set<Category> children = new HashSet<>();
     
-	
-	
 	public Category() {
 	
 	}
 	
-	
-
 	public Category(Integer id) {
 		this.id = id;
 	}
+	
+	
 
+	public static Category copyIdAndName(Category category) {
+        Category copyCategory = new Category();
+        copyCategory.setId(category.getId());
+        copyCategory.setName(category.getName());
+        
+        return copyCategory;
+        
+	}
 
-
+	public static Category copyIdAndName(Integer id, String name) {
+        Category copyCategory = new Category();
+        copyCategory.setId(id);
+        copyCategory.setName(name);
+        
+        return copyCategory;
+        
+	}
 	public Category(String name) {
 		this.name = name;
 		this.alias = name;
@@ -104,6 +120,9 @@ public class Category {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+	
+	@Transient
+	private boolean hasChildren;
 
 	public Category getParent() {
 		return parent;
@@ -126,7 +145,23 @@ public class Category {
 		return "Category [id=" + id + ", name=" + name + ", alias=" + alias + ", image=" + image + ", enabled="
 				+ enabled + ", parent=" + parent + ", children=" + children + "]";
 	}
-    
 	
+	
+    
+
+	public boolean isHasChildren() { return hasChildren; }
+	 
+
+	public void setHasChildren(boolean hasChildren) {
+		this.hasChildren = hasChildren;
+	}
+
+	@Transient
+	public String getImagePath() {
+		
+		if (this.id == null) return "/images/image-thumbnail.png";
+		
+		return Constants.S3_BASE_URI + "/category-images/" + this.id + "/" + this.image;
+	}
 	
 }

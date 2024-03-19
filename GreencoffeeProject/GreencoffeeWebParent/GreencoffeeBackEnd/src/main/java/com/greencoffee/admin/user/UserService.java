@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.greencoffee.common.entity.Role;
@@ -15,11 +19,16 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class UserService {
 	
+	public static final int USERS_PER_PAGE = 4;
+	
 	@Autowired
 	private UserRepository repo;
 	
 	@Autowired
 	private RoleRepository roleRepo;
+	/*
+	 * @Autowired(required=false) private PasswordEncoder passwordEncoder;
+	 */
 	
 	public List<User> listAll(){
 		return (List<User>) repo.findAll();
@@ -38,9 +47,19 @@ public class UserService {
 			repo.save(existingUser);
 					
 		}
+		//encodePassword(user);
 		return repo.save(user);
 	}
 	
+	/*
+	 * public void encodePassword(User user) { String encodedPassword =
+	 * passwordEncoder.encode(user.getPassword());
+	 * user.setPassword(encodedPassword); }
+	 */
+	public Page<User> listByPage(int pageNum){
+		Pageable pageable = PageRequest.of(pageNum - 1, USERS_PER_PAGE);
+		return repo.findAll(pageable);
+	}
 	public boolean isEmailUnique(Integer id, String email) {
 		User userByEmail = repo.getUserByEmail(email);
 		

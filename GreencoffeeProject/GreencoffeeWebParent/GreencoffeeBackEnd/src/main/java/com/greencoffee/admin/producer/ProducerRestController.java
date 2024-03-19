@@ -11,7 +11,7 @@ import com.greencoffee.admin.user.UserService;
 public class ProducerRestController {
 	
 	@Autowired
-	private UserService service;
+	private ProducerService service;
 	
 	@PostMapping("/producers/check_email")
 	public String checkDuplicateEmail(@Param("id") Integer id, @Param("email") String email) {

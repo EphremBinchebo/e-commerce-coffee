@@ -2,12 +2,17 @@ package com.greencoffee.admin.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 
 import com.greencoffee.common.entity.Role;
@@ -36,13 +41,14 @@ public class UserRepositoryTest {
 	
 	@Test
 	public void testCreateNewUserWithTwoRoles() {
-		User userSelam = new User("selam@gmail.com", "sel2025", "Selam", "Kebede");
+		User userSelam = new User("selam3@gmail.com", "sel2025", "Selam", "Kebede");
 //		userSelam.addRole(new Role());
 	    Role roleEditor = new Role(5);
 	    Role roleAssistant = new Role(4);
 	   
 	    userSelam.addRole(roleEditor);
 	    userSelam.addRole(roleAssistant);
+	    userSelam.setEnabled(true);
 	
 	    User savedUser = repo.save(userSelam);
 	
@@ -122,5 +128,21 @@ public class UserRepositoryTest {
 	public void testEnableUser() {
 		Integer id = 88;
 		repo.updateEnabledStatus(id, true);
+	}
+	
+	@Test
+	public void testListFirstPage() {
+		int pageNumber = 0;
+		int pageSize = 4;
+		
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		Page<User> page = repo.findAll(pageable);
+		
+		List<User> listUsers = page.getContent();
+		
+		listUsers.forEach(user -> System.out.println(user));
+		
+		assertThat(listUsers.size()).isEqualTo(pageSize);
+		
 	}
 }
